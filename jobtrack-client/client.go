@@ -76,7 +76,7 @@ func listApplications() {
 	}
 }
 func createApplication(application Application) {
-	response, err := sendRequest("GET", baseURL+"/applications", application)
+	response, err := sendRequest("POST", baseURL+"/applications", application)
 	if err != nil {
 		log.Println("Error when creating application", err)
 		return
