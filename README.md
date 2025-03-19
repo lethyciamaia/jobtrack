@@ -12,7 +12,6 @@ Currently, it’s a work-in-progress, and more features will be added as I conti
 
 ## Features
 
-- **Create**: Add a new application.
-- **List**: View all applications.
-- **Update**: Update the status of an application.
-- **Delete**: Remove an application.
+- **Basic CRUD operations**: Create, Read, Update and Delete aplications.
+- **Routing**: Integration of gorilla/mux router to manage HTTP request routes.
+- **Persistence**: Persistence using GORM (a Go ORM library) and PostgreSQL to store data.
