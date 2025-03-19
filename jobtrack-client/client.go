@@ -24,7 +24,7 @@ type Application struct {
 	ID             int       `json:"id"`
 	EntrepriseName string    `json:"entreprise"`
 	Description    string    `json:"description"`
-	Date           time.Time `json:"date"`
+	CreatedAt      time.Time `json:"created_at"`
 	Status         Status    `json:"status"`
 }
 

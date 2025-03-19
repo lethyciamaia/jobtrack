@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"jobtrack/jobtrack-api/database"
 	"jobtrack/jobtrack-api/models"
 	"net/http"
 	"strconv"
@@ -15,8 +16,16 @@ func HandleRoot(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Welcome to the JobTrack API!!"))
 }
 func ListApplications(w http.ResponseWriter, r *http.Request) {
+	var applications []models.Application
+
+	result := database.DB.Find(&applications)
+	if result.Error != nil {
+		http.Error(w, "Failed to fetch applications", http.StatusInternalServerError)
+		return
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(models.Applications)
+	json.NewEncoder(w).Encode(applications)
 }
 func CreateApplication(w http.ResponseWriter, r *http.Request) {
 	var newApplication models.Application
@@ -25,8 +34,8 @@ func CreateApplication(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
-	newApplication.ID = len(models.Applications) + 1
-	models.Applications = append(models.Applications, newApplication)
+	database.DB.Create(&newApplication)
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(newApplication)
@@ -34,23 +43,25 @@ func CreateApplication(w http.ResponseWriter, r *http.Request) {
 
 func UpdateStatus(w http.ResponseWriter, r *http.Request) {
 	var updated models.ApplicationUpdate
+
 	err := json.NewDecoder(r.Body).Decode(&updated)
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
 
-	for i, application := range models.Applications {
-		if application.ID == updated.ID {
-			models.Applications[i].Status = updated.Status
-
-			w.Header().Set("Content-Type", "application/json")
-			w.WriteHeader(http.StatusOK)
-			json.NewEncoder(w).Encode(models.Applications[i])
-			return
-		}
+	var application models.Application
+	result := database.DB.First(&application, updated.ID)
+	if result.Error != nil {
+		http.Error(w, "No application was found with this ID", http.StatusNotFound)
+		return
 	}
-	http.Error(w, "No application was found with this ID", http.StatusNotFound)
+	application.Status = updated.Status
+	database.DB.Save(&application)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(application)
 }
 func DeleteApplication(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -61,14 +72,13 @@ func DeleteApplication(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid ID", http.StatusBadRequest)
 		return
 	}
-
-	for i, application := range models.Applications {
-		if application.ID == id {
-			models.Applications = append(models.Applications[:i], models.Applications[i+1:]...)
-			w.WriteHeader(http.StatusOK)
-			fmt.Fprintf(w, "Application %d deleted", id)
-			return
-		}
+	var application models.Application
+	if result := database.DB.First(&application, uint(id)); result.Error != nil {
+		http.Error(w, "No application was found with this ID", http.StatusNotFound)
+		return
 	}
-	http.Error(w, "No application was found with this ID", http.StatusNotFound)
+
+	database.DB.Delete(&application)
+	w.WriteHeader(http.StatusOK)
+	fmt.Fprintf(w, "Application %d deleted", id)
 }
