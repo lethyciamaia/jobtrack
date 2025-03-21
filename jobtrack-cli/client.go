@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-const baseURL = "http://localhost:8081"
-
 type Status string
 
 const (
@@ -32,6 +30,8 @@ type ApplicationUpdate struct {
 	ID     int    `json:"id"`
 	Status Status `json:"status"`
 }
+
+var baseURL string = "http://goapp:8000"
 
 func sendRequest(method, url string, data interface{}) (*http.Response, error) {
 	var jsonData []byte

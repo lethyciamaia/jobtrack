@@ -3,8 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
-	"jobtrack/jobtrack-api/database"
-	"jobtrack/jobtrack-api/models"
+	"jobtrack-api/database"
+	"jobtrack-api/models"
 	"net/http"
 	"strconv"
 

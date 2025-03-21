@@ -12,12 +12,12 @@ func main() {
 	newApplication = Application{EntrepriseName: "Telecom Paris", Description: "IA", CreatedAt: time.Now().Truncate(24 * time.Hour), Status: Sended}
 	createApplication(newApplication)
 	fmt.Println("Update Status:")
-	updated := ApplicationUpdate{ID: 3, Status: Interview}
+	updated := ApplicationUpdate{ID: 2, Status: Interview}
 	updateStatus(updated)
 	fmt.Println("Listing all:")
 	listApplications()
-	fmt.Println("Deleting application 4:")
-	deleteApplication(4)
+	fmt.Println("Deleting application 1:")
+	deleteApplication(2)
 	fmt.Println("Listing all:")
 	listApplications()
 }

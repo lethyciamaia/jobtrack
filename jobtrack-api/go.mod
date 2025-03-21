@@ -1,4 +1,4 @@
-module jobtrack
+module jobtrack-api
 
 go 1.24.1
 

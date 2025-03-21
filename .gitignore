@@ -26,3 +26,6 @@ go.work.sum
 # local config
 .env
 config.yaml
+
+# Front
+*node_modules

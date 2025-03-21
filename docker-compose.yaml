@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  goapp:
+    image: goapp:1.0
+    build: 
+      context: jobtrack-api
+      dockerfile: Dockerfile
+    environment:
+      DB_HOST: ${DB_HOST}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
+      DB_PORT: ${DB_PORT}
+      DB_SSLMODE: ${DB_SSLMODE}
+      GO_PORT: ${GO_PORT}
+      GO_ENV: ${GO_ENV}
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+    volumes:
+      - ./.env:/app/.env
+
+  postgres:
+    image: postgres:14.0
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    ports:
+      - "5432:5432"
+
+  client:
+    image: client:latest
+    build:
+      context: ./jobtrack-cli
+      dockerfile: Dockerfile
+    depends_on:
+      - goapp
+    environment:
+      API_URL: ${API_URL}

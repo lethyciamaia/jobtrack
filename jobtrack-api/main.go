@@ -2,21 +2,15 @@ package main
 
 import (
 	"fmt"
-	"jobtrack/jobtrack-api/database"
+	"jobtrack-api/database"
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/joho/godotenv"
 )
 
 func main() {
 	fmt.Println("JobTrack API in Golang")
 
-	err := godotenv.Load("../.env")
-	if err != nil {
-		log.Fatal("Error when loading .env")
-	}
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
 		os.Getenv("DB_HOST"),
 		os.Getenv("DB_USER"),
@@ -25,10 +19,11 @@ func main() {
 		os.Getenv("DB_PORT"),
 		os.Getenv("DB_SSLMODE"),
 	)
+	// dsn := "host=postgres user=postgres password=futureintern031917 dbname=jobtrack port=5432 sslmode=disable"
 
 	r := setupRouter()
 	database.ConnectDB(dsn)
 
-	appPort := fmt.Sprintf(":%s", os.Getenv("APP_PORT"))
-	log.Fatal(http.ListenAndServe(appPort, r))
+	goPort := fmt.Sprintf(":%s", os.Getenv("GO_PORT"))
+	log.Fatal(http.ListenAndServe(goPort, r))
 }

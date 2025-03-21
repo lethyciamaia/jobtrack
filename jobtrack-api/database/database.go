@@ -1,7 +1,8 @@
 package database
 
 import (
-	"jobtrack/jobtrack-api/models"
+	"fmt"
+	"jobtrack-api/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -16,7 +17,11 @@ func ConnectDB(dsn string) {
 		panic("Failed to connect to database")
 	}
 
-	db.AutoMigrate(&models.Application{})
+	err = db.AutoMigrate(&models.Application{})
+	if err != nil {
+		panic("Failed to migrate database")
+	}
 
 	DB = db
+	fmt.Println("Successfully connected to the database!")
 }

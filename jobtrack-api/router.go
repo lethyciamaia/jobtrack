@@ -1,7 +1,7 @@
 package main
 
 import (
-	"jobtrack/jobtrack-api/handlers"
+	"jobtrack-api/handlers"
 
 	"github.com/gorilla/mux"
 )
