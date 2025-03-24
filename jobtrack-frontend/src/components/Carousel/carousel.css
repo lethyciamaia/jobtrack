@@ -1,0 +1,29 @@
+.carousel-container {
+    display: flex;
+    align-items: center;
+    scroll-snap-type: x mandatory;
+    gap: 24px;
+    white-space: nowrap;
+    height: 800px;
+}
+
+.carousel-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    display: flex;
+    scroll-snap-type: x mandatory;
+}
+
+.card-wrapper {
+    flex: 0 0 400px; 
+    scroll-snap-align:initial; 
+    min-width: 400px;
+}
+
+.card-wrapper:first-child {
+    margin-left: 48px;
+}
+.card-wrapper:last-child {
+    margin-right: -120px;
+}

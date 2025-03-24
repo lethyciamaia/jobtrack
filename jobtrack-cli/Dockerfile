@@ -15,4 +15,4 @@ FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/client-app .
 
-CMD ["./client-app"]
+# CMD ["./client-app"]
