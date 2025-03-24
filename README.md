@@ -15,7 +15,9 @@ Currently, it’s a work-in-progress, and more features will be added as I conti
 - **Basic CRUD operations**: Create, Read, Update and Delete aplications.
 - **Routing**: Integration of gorilla/mux router to manage HTTP request routes.
 - **Persistence**: Persistence using GORM (a Go ORM library) and PostgreSQL to store data.
-- **a**: With Docker etc 
+- **Containerization:**: Docker support for easy deployment and environment consistency.
+- **Frontend Integration:** Frontend using TypeScript and React to visualize and manage applications.
+- **CORS Support:** Proper handling of Cross-Origin Resource Sharing (CORS) settings.
 
 ## Links that helped me 
 - https://go.dev/doc/
