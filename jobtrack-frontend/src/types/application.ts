@@ -1,14 +1,14 @@
 export enum Status {
     Sended = "Sended",
     Interview = "Interview",
-    Reject = "Reject",
+    Reject = "Rejected",
     Accepted = "Accepted",
 }
 
 export interface Application {
     id: number;
-    enterprise: string;
+    company: string;
     description: string;
-    createdAt: Date;
+    created_at: Date;
     status: Status;
 }

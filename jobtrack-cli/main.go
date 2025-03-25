@@ -7,9 +7,9 @@ import (
 
 func main() {
 	fmt.Println("Creating applications:")
-	newApplication := Application{EntrepriseName: "ENSTA Paris", Description: "Cybersecurity", CreatedAt: time.Now(), Status: Sended}
+	newApplication := Application{Company: "ENSTA Paris", Description: "Cybersecurity", CreatedAt: time.Now(), Status: Sended}
 	createApplication(newApplication)
-	newApplication = Application{EntrepriseName: "Telecom Paris", Description: "IA", CreatedAt: time.Now(), Status: Sended}
+	newApplication = Application{Company: "Telecom Paris", Description: "IA", CreatedAt: time.Now(), Status: Sended}
 	createApplication(newApplication)
 	fmt.Println("Update Status:")
 	updated := ApplicationUpdate{ID: 2, Status: Interview}

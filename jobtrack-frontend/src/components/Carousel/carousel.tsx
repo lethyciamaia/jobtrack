@@ -1,11 +1,16 @@
 import React, { useRef, useState } from "react";
 import ApplicationCard from "../Cards/applicationCard";
-import { Application } from "../../types/application";
+import { Application, Status } from "../../types/application";
 
 import "./carousel.css"
 
+interface CarouselProps {
+    items: Application[];
+    onUpdate: (id: number, newStatus: Status) => void;
+    onDelete: (id: number) => void;
+}
 
-const Carousel: React.FC<{ items: Application[] }> = ({ items }) => {
+const Carousel: React.FC<CarouselProps> = ({ items, onUpdate, onDelete }) => {
     const carouselRef = useRef<HTMLDivElement>(null);
     const [selectedIndex, setSelectedIndex] = useState<number>(0);
 
@@ -23,6 +28,8 @@ const Carousel: React.FC<{ items: Application[] }> = ({ items }) => {
                             className={selectedIndex === index ? "selected" : ""}
                             isSelected={index === selectedIndex}
                             onClick={() => handleSelect(index)}
+                            onUpdate={onUpdate}
+                            onDelete={onDelete}
                         />
                     </div>
                 ))}

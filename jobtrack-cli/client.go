@@ -19,11 +19,11 @@ const (
 )
 
 type Application struct {
-	ID             int       `json:"id"`
-	EntrepriseName string    `json:"entreprise"`
-	Description    string    `json:"description"`
-	CreatedAt      time.Time `json:"created_at"`
-	Status         Status    `json:"status"`
+	ID          int       `json:"id"`
+	Company     string    `json:"company"`
+	Description string    `json:"description"`
+	CreatedAt   time.Time `json:"created_at"`
+	Status      Status    `json:"status"`
 }
 
 type ApplicationUpdate struct {

@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { format } from 'date-fns';
 import { VStack, HStack, Spacer } from "../Stacks/stack";
 import { Application, Status } from "../../types/application";
 
 import "./card.css"
+import "./dropdown.css"
 
 interface StatusTagProps {
     status: Status;  
@@ -20,12 +21,42 @@ type ApplicationCardProps = {
     className?: string; 
     isSelected: boolean;
     onClick: () => void;
+    onUpdate: (id: number, newStatus: Status) => void;
+    onDelete: (id: number) => void;
 };
 
-const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, className = "", isSelected, onClick }) => {
+const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, className = "", isSelected, onClick, onUpdate, onDelete }) => {
+    const [showMenu, setShowMenu] = useState(false);
+    console.log(application);
+
+    const handleCardClick = () => {
+        onClick(); 
+        setShowMenu(false); 
+    };
+
+    const handleStatusClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+        if (isSelected) {
+            setShowMenu(!showMenu);  
+        } else {
+            onClick(); 
+        }
+    };
+
+    const handleDelete = (e: React.MouseEvent) => {
+        e.stopPropagation(); 
+        if (isSelected) {
+            onDelete(application.id); 
+        } else {
+            onClick(); 
+        }
+    };
+
+    // useEffect()
+
     return (
         <div 
-            onClick={onClick}
+            onClick={handleCardClick}
             style={ {
                 cursor:'pointer',
                 transition: 'transform 0.3s ease, opacity 0.3s ease',
@@ -36,17 +67,34 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application, classNam
             }}
             className={`card-container ${className}`}
         > 
-            <VStack className="child"> 
-                <HStack gap={4} className=""> 
-                    <VStack gap={0}>
-                        <h1>{application.enterprise}</h1>
-                        <h3>Created at {application.createdAt ? format(new Date(application.createdAt), 'dd/MM/yyyy') : 'Invalid Date'}</h3>
-
+            <VStack > 
+                <HStack gap={4}> 
+                    <VStack gap={10}>
+                        <h1>{application.company}</h1>
+                        <h3>Created at {application.created_at ? format(new Date(application.created_at), 'dd/MM/yyyy') : 'Invalid Date'}</h3>
                     </VStack>
                     <Spacer />
-                    <StatusTag status={application.status}/>
+                    <div onClick={handleStatusClick}>
+                        <StatusTag status={application.status}/>
+                    </div>
+                    {showMenu && (
+                        <ul className="dropdown-menu">
+                        {Object.values(Status).map((status) => (
+                        <li key={status} onClick={() => {
+                            onUpdate(application.id, status); 
+                            setShowMenu(false);
+                        }}>
+                            {status}
+                        </li>
+                        ))}
+                        </ul>
+                    )}
                 </HStack>
                 <p> {application.description} </p>
+                <Spacer />
+                <div onClick={handleDelete} className="delete-button">
+                    <h5> DELETE </h5>
+                </div>
             </VStack>
         </div>
     );
